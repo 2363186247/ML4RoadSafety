@@ -137,7 +137,7 @@ import pandas as pd
 data_dir = "./data"
 state_name = "MA"
 
-adj = torch.load(os.path.join(data_dir, f"{state_name}/adj_matrix.pt"))
+adj = torch.load(os.path.join(data_dir, f"{state_name}/adj_matrix.pt"), weights_only=False)
 # n = 285942 and m = 706402
 edge_index = adj.coalesce().indices()
 # %%
@@ -255,7 +255,7 @@ import pandas as pd
 
 data_dir = "./data"
 state_name = "MD"
-edge_feature_dict = torch.load(os.path.join(data_dir, f"{state_name}/Edges/edge_features_traffic_2012.pt"))
+edge_feature_dict = torch.load(os.path.join(data_dir, f"{state_name}/Edges/edge_features_traffic_2012.pt"), weights_only=False)
 
 # edge_features = []
 # for key in ['oneway', 'access_ramp', 'bus_stop', 'crossing', 'disused', 'elevator', 'escape', 'living_street', 'motorway', 'motorway_link', 'primary', 'primary_link', 'residential', 'rest_area', 'road', 'secondary', 'secondary_link', 'stairs', 'tertiary', 'tertiary_link', 'trunk', 'trunk_link', 'unclassified', 'unsurfaced']:

@@ -11,7 +11,7 @@ args = parser.parse_args()
 data_dir = "../data"
 state_name = args.state_name
 
-adj = torch.load(os.path.join(data_dir, f"{state_name}/adj_matrix.pt"))
+adj = torch.load(os.path.join(data_dir, f"{state_name}/adj_matrix.pt"), weights_only=False)
 edge_index = adj.coalesce().indices()
 
 # %%
