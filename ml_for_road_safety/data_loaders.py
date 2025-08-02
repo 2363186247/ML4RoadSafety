@@ -153,7 +153,7 @@ class TrafficAccidentDataset:
         # load the edge features 
         edge_feature_dir = os.path.join(self.data_dir, f"{self.state_name}/Edges/edge_features_traffic_{year}.pt")
         if os.path.exists(edge_feature_dir):
-            edge_feature_dict = torch.load(edge_feature_dir)
+            edge_feature_dict = torch.load(edge_feature_dir, weights_only=False)
 
             # for key in ['AADT']: edge_features = torch.stack(edge_features, dim=1)
             column_values = edge_feature_dict['AADT'].coalesce().values()
@@ -225,7 +225,7 @@ class TrafficAccidentDataset:
         if not os.path.exists(edge_feature_dir):
             raise ValueError("Edge features not found!")
         
-        edge_feature_dict = torch.load(edge_feature_dir)
+        edge_feature_dict = torch.load(edge_feature_dir, weights_only=False)
         edge_indices =  edge_feature_dict['AADT'].coalesce().indices()
         edge_weights = edge_feature_dict['AADT'].coalesce().values()
         mask = ~torch.isnan(edge_weights)
@@ -270,7 +270,7 @@ class TrafficAccidentDataset:
         return yearly_data
 
     def load_static_edge_features(self):
-        edge_feature_dict = torch.load(os.path.join(self.data_dir, f"{self.state_name}/Edges/edge_features.pt"))
+        edge_feature_dict = torch.load(os.path.join(self.data_dir, f"{self.state_name}/Edges/edge_features.pt"), weights_only=False)
 
         edge_lengths = edge_feature_dict['length'].coalesce().values()
         length_mean = edge_lengths[~torch.isnan(edge_lengths)].mean()
@@ -293,7 +293,7 @@ class TrafficAccidentDataset:
 
     def load_static_network(self):
         # Load adjacency matrix
-        adj = torch.load(os.path.join(self.data_dir, f"{self.state_name}/adj_matrix.pt"))
+        adj = torch.load(os.path.join(self.data_dir, f"{self.state_name}/adj_matrix.pt"), weights_only=False)
         edge_index = adj.coalesce().indices().long()
 
         data = Data(edge_index=edge_index)
@@ -380,7 +380,7 @@ def load_monthly_data(data, data_dir = "./data", state_name = "MA", num_negative
     # load the edge features 
     edge_feature_dir = os.path.join(data_dir, f"{state_name}/Edges/edge_features_traffic_{year}.pt")
     if os.path.exists(edge_feature_dir):
-        edge_feature_dict = torch.load(edge_feature_dir)
+        edge_feature_dict = torch.load(edge_feature_dir, weights_only=False)
 
         # for key in ['AADT']: edge_features = torch.stack(edge_features, dim=1)
         column_values = edge_feature_dict['AADT'].coalesce().values()
@@ -406,7 +406,7 @@ def load_yearly_data(data_dir = "./data", state_name = "MA", year=2022):
     if not os.path.exists(edge_feature_dir):
         raise ValueError("Edge features not found!")
     
-    edge_feature_dict = torch.load(edge_feature_dir)
+    edge_feature_dict = torch.load(edge_feature_dir, weights_only=False)
     edge_indices =  edge_feature_dict['AADT'].coalesce().indices()
     edge_weights = edge_feature_dict['AADT'].coalesce().values()
     mask = ~torch.isnan(edge_weights)
@@ -429,7 +429,7 @@ def load_yearly_data(data_dir = "./data", state_name = "MA", year=2022):
     return edge_indices, edge_weights, node_features
 
 def load_static_edge_features(data_dir = "./data", state_name = "MA"):
-    edge_feature_dict = torch.load(os.path.join(data_dir, f"{state_name}/Edges/edge_features.pt"))
+    edge_feature_dict = torch.load(os.path.join(data_dir, f"{state_name}/Edges/edge_features.pt"), weights_only=False)
 
     edge_lengths = edge_feature_dict['length'].coalesce().values()
     length_mean = edge_lengths[~torch.isnan(edge_lengths)].mean()
@@ -453,7 +453,7 @@ def load_static_edge_features(data_dir = "./data", state_name = "MA"):
 def load_static_network(data_dir = "./data", state_name = "MA", 
                         feature_type = "verse", feature_name = "MA_ppr_128.npy"):
     # Load adjacency matrix
-    adj = torch.load(os.path.join(data_dir, f"{state_name}/adj_matrix.pt"))
+    adj = torch.load(os.path.join(data_dir, f"{state_name}/adj_matrix.pt"), weights_only=False)
     edge_index = adj.coalesce().indices().long()
 
     data = Data(edge_index=edge_index)
@@ -510,7 +510,7 @@ def load_network_with_accidents(data_dir = "./data", state_name = "MA", num_nega
         - splits: training edges, validation edges, validation negative edges, test edges, test negative edges
     '''
     # Load adjacency matrix
-    adj = torch.load(os.path.join(data_dir, f"{state_name}/adj_matrix.pt"))
+    adj = torch.load(os.path.join(data_dir, f"{state_name}/adj_matrix.pt"), weights_only=False)
     edge_index = adj.coalesce().indices()
 
     data = Data(edge_index=edge_index)

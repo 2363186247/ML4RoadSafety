@@ -58,7 +58,7 @@ def main(args):
     load_model_dir = os.path.join("./saved/", args.load_model_dir)
     if os.path.exists(os.path.join(load_model_dir, args.load_model_name)):
         model.load_state_dict(
-            torch.load(os.path.join(load_model_dir, args.load_model_name), map_location=device)
+            torch.load(os.path.join(load_model_dir, args.load_model_name), map_location=device, weights_only=True)
         )
         print("Loaded model successfully!")
     feature_channels = in_channels_node if args.encoder == "none" else args.hidden_channels
